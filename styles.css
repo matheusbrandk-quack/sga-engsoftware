@@ -52,17 +52,22 @@ body { background-color: var(--bg-color); color: var(--text-dark); }
 .card-turma { background: var(--card-bg); padding: 20px; border-radius: var(--radius); border-top: 6px solid var(--primary-blue); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 
 /* Tabela */
-.table-container { background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-top: 20px;}
+.table-container { background: var(--card-bg); border-radius: var(--radius); padding: 16px; margin-top: 20px; overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
 th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
 th { color: var(--text-muted); font-size: 12px; }
-td input[type="number"] { width: 50px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; }
+td input[type="number"] { width: 55px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; }
+td input[type="number"]:disabled { background-color: #e9ecef; cursor: not-allowed; }
 
 /* Status Badges */
-.status-badge { padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; color: white; }
+.status-badge { padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; color: white; white-space: nowrap; }
 .bg-success { background-color: var(--success); }
 .bg-danger { background-color: var(--danger); }
 .bg-warning { background-color: var(--warning); }
+
+/* Paginação */
+.pagination-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; font-size: 14px; color: var(--text-muted); }
+.pagination-buttons { display: flex; gap: 8px; }
 
 /* Área de Arquivos PDF da Disciplina */
 .files-container {

@@ -51,7 +51,7 @@ function saveDB() {
 }
 
 // ==========================================
-// REGRAS DE NEGÓCIO - SECÇÃO 7
+// REGRAS DE NEGÓCIO - CÁLCULO E SITUAÇÃO
 // ==========================================
 
 function calcularSituacao(aluno) {
@@ -60,22 +60,34 @@ function calcularSituacao(aluno) {
     const media = (0.4 * ind) + (0.6 * proj);
     
     let status = "";
+    let precisaFinal = false;
+
     if (media >= 7.0) {
         status = "Aprovado";
     } else if (media < 7.0 && proj < 4.0) {
         status = "Reprovado";
     } else if (media < 7.0 && proj >= 4.0) {
+        precisaFinal = true;
         status = "Fará prova final";
     }
 
-    if (status === "Fará prova final" && aluno.notaFinal !== null && aluno.notaFinal !== "") {
-        if ((proj + parseFloat(aluno.notaFinal)) >= 7.0) {
-            status = "Aprovado";
-        } else {
-            status = "Reprovado";
+    if (precisaFinal && aluno.notaFinal !== null && aluno.notaFinal !== undefined && aluno.notaFinal !== "") {
+        const notaFinalNum = parseFloat(aluno.notaFinal);
+        if (!isNaN(notaFinalNum)) {
+            if ((proj + notaFinalNum) >= 7.0) {
+                status = "Aprovado (Final)";
+            } else {
+                status = "Reprovado (Final)";
+            }
         }
     }
-    return { media: media.toFixed(1), status, proj };
+
+    return { 
+        media: media.toFixed(1), 
+        status, 
+        proj, 
+        precisaFinal 
+    };
 }
 
 // ==========================================
@@ -160,8 +172,12 @@ function renderTabela() {
     
     paginated.forEach(a => {
         const calc = calcularSituacao(a);
-        let badgeClass = calc.status === 'Aprovado' ? 'bg-success' : calc.status === 'Reprovado' ? 'bg-danger' : 'bg-warning';
-        let finalInput = calc.status !== 'Fará prova final' && a.notaFinal === null ? 'disabled' : '';
+        
+        let badgeClass = 'bg-warning';
+        if (calc.status.includes('Aprovado')) badgeClass = 'bg-success';
+        if (calc.status.includes('Reprovado')) badgeClass = 'bg-danger';
+
+        const finalInputDisabled = !calc.precisaFinal ? 'disabled' : '';
 
         tbody.innerHTML += `
             <tr>
@@ -172,8 +188,8 @@ function renderTabela() {
                 <td><input type="number" min="0" max="10" step="0.1" value="${a.proj1 !== null && a.proj1 !== undefined ? a.proj1 : ''}" onchange="salvarNota('${a.matricula}', 'proj1', this.value)"></td>
                 <td><input type="number" min="0" max="10" step="0.1" value="${a.proj2 !== null && a.proj2 !== undefined ? a.proj2 : ''}" onchange="salvarNota('${a.matricula}', 'proj2', this.value)"></td>
                 <td><strong>${calc.media}</strong></td>
+                <td><input type="number" min="0" max="10" step="0.1" value="${a.notaFinal !== null && a.notaFinal !== undefined ? a.notaFinal : ''}" ${finalInputDisabled} onchange="salvarNota('${a.matricula}', 'notaFinal', this.value)"></td>
                 <td><span class="status-badge ${badgeClass}">${calc.status}</span></td>
-                <td><input type="number" min="0" max="10" step="0.1" value="${a.notaFinal !== null && a.notaFinal !== undefined ? a.notaFinal : ''}" ${finalInput} onchange="salvarNota('${a.matricula}', 'notaFinal', this.value)"></td>
             </tr>`;
     });
     
@@ -189,23 +205,20 @@ window.salvarNota = function(mat, campo, valor) {
     const aluno = alunos.find(a => a.matricula === mat);
     if (!aluno) return;
 
-    // Tratamento de campo em branco
     if (valor === '' || valor === null) {
         aluno[campo] = null;
     } else {
         let num = parseFloat(valor);
 
-        // Tratamento de valor inválido (não numérico)
         if (isNaN(num)) {
             alert('Por favor, insira um valor numérico válido.');
             renderTabela();
             return;
         }
 
-        // Validação de intervalo de 0 a 10
         if (num < 0 || num > 10) {
             alert('A nota deve estar compreendida entre 0 e 10.');
-            num = Math.max(0, Math.min(10, num)); // Limita (clamp) ao intervalo válido
+            num = Math.max(0, Math.min(10, num));
         }
 
         aluno[campo] = num;
