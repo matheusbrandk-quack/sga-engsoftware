@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGA — Área do Docente</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- TELA DE LOGIN -->
+    <div id="screen-login" class="screen active">
+        <div class="auth-card">
+            <h2>SGA Unifacisa</h2>
+            <p>Bem-vindo de volta. Entre com as suas credenciais institucionais</p>
+            <form id="form-login">
+                <div class="form-group">
+                    <label>E-mail institucional</label>
+                    <input type="email" id="login-email" required placeholder="professor@maisunifacisa.com.br">
+                </div>
+                <div class="form-group">
+                    <label>Palavra-passe</label>
+                    <input type="password" id="login-password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+            </form>
+            <p class="auth-footer">Ainda não tem uma conta? <a href="#" id="link-to-register">Cadastre-se como professor</a></p>
+        </div>
+    </div>
+
+    <!-- TELA DE CADASTRO -->
+    <div id="screen-register" class="screen">
+        <div class="auth-card">
+            <h2>Criar conta de professor</h2>
+            <p>Preencha os dados abaixo para se registar</p>
+            <form id="form-register">
+                <div class="form-group">
+                    <label>Nome completo</label>
+                    <input type="text" id="reg-name" required placeholder="Ana Paula Menezes">
+                </div>
+                <div class="form-group">
+                    <label>E-mail institucional</label>
+                    <input type="email" id="reg-email" required placeholder="professor@maisunifacisa.com.br">
+                </div>
+                <div class="form-group">
+                    <label>Disciplina principal</label>
+                    <input type="text" id="reg-subject" required placeholder="Engenharia de Software">
+                </div>
+                <div class="form-group">
+                    <label>Palavra-passe</label>
+                    <input type="password" id="reg-password" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirmar palavra-passe</label>
+                    <input type="password" id="reg-confirm-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Registar</button>
+            </form>
+            <p class="auth-footer">Já tem uma conta? <a href="#" id="link-to-login">Faça login</a></p>
+        </div>
+    </div>
+
+    <!-- TELA PRINCIPAL (HOME) -->
+    <div id="screen-home" class="screen">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h1>SGA <br><small>Docente</small></h1>
+            </div>
+            <nav class="sidebar-nav">
+                <button type="button" class="nav-btn active" id="nav-turmas">Minhas turmas</button>
+                <button type="button" class="nav-btn" id="nav-perfil">Meu perfil</button>
+            </nav>
+            <button type="button" class="btn-logout" id="btn-logout">Sair</button>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="user-info">
+                    <div class="avatar" id="topbar-avatar">AM</div>
+                </div>
+            </header>
+
+            <!-- VIEW: TURMAS -->
+            <section id="view-turmas" class="content-view active">
+                <div class="view-header">
+                    <h2>Minhas turmas</h2>
+                    <p>Selecione uma turma para ver o diário de notas e materiais.</p>
+                </div>
+                <div class="turmas-grid" id="turmas-grid"></div>
+            </section>
+
+            <!-- VIEW: TABELA DE NOTAS E ARQUIVOS -->
+            <section id="view-tabela" class="content-view">
+                <div class="view-header">
+                    <button type="button" class="btn-link" id="btn-voltar-turmas">← Voltar para as minhas turmas</button>
+                    <h2 id="turma-titulo">Engenharia de Software</h2>
+                    <p id="turma-subtitulo">ADS 2026.2 - 30 alunos matriculados</p>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Matrícula</th>
+                                <th>Nome do aluno</th>
+                                <th>P1</th>
+                                <th>P2</th>
+                                <th>Proj 1</th>
+                                <th>Proj 2</th>
+                                <th>Média</th>
+                                <th>Status</th>
+                                <th>Final</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body-alunos"></tbody>
+                    </table>
+                </div>
+                <div class="pagination-bar">
+                    <span id="pagination-info">A mostrar 1-5 de alunos</span>
+                    <div class="pagination-buttons">
+                        <button type="button" class="btn btn-secondary" id="btn-prev-page">&lt;</button>
+                        <button type="button" class="btn btn-secondary" id="btn-next-page">&gt;</button>
+                    </div>
+                </div>
+
+                <!-- ÁREA DE ARQUIVOS PDF DA DISCIPLINA -->
+                <div class="files-container">
+                    <div class="files-header">
+                        <h3>Arquivos e Materiais de Apoio (PDF)</h3>
+                        <label for="input-upload-pdf" class="btn btn-primary btn-sm">
+                            + Anexar novo PDF
+                        </label>
+                        <input type="file" id="input-upload-pdf" accept="application/pdf" style="display: none;">
+                    </div>
+                    <div class="files-list" id="files-list">
+                        <!-- Lista de arquivos gerada dinamicamente -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: PERFIL -->
+            <section id="view-perfil" class="content-view">
+                <div class="view-header">
+                    <h2>Meu perfil</h2>
+                    <p>Atualize a sua foto e os seus dados cadastrais.</p>
+                </div>
+                <div class="profile-container">
+                    <div class="profile-photo-section">
+                        <div class="avatar-large" id="profile-avatar">AM</div>
+                        <div class="photo-info">
+                            <strong>Foto do perfil</strong>
+                            <p>PNG ou JPG. Recomendado 400x400 px.</p>
+                            <div class="photo-actions">
+                                <label for="input-upload-photo" class="btn btn-primary">Alterar foto</label>
+                                <input type="file" id="input-upload-photo" accept="image/*" style="display: none;">
+                                <button type="button" class="btn-link text-danger" id="btn-remove-photo">Remover</button>
+                            </div>
+                        </div>
+                    </div>
+                    <form id="form-profile" class="profile-form">
+                        <div class="form-group">
+                            <label>Nome completo</label>
+                            <input type="text" id="prof-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>E-mail institucional</label>
+                            <input type="email" id="prof-email" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Disciplina principal</label>
+                            <input type="text" id="prof-subject" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
