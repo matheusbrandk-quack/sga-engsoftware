@@ -196,7 +196,6 @@ function renderTabela() {
     const totalPages = Math.ceil(turmaAlunos.length / ITEMS_PER_PAGE) || 1;
     document.getElementById('pagination-info').innerText = `Página ${currentPage} de ${totalPages} (Total: ${turmaAlunos.length} alunos)`;
 }
-
 // ==========================================
 // TRATAMENTO E VALIDAÇÃO DE NOTAS
 // ==========================================
